@@ -5,90 +5,36 @@
  * @format
  */
 
-import React, {FC, useEffect, useState} from 'react';
-import {
-  FlatList,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableHighlight,
-  View,
-} from 'react-native';
+import React, {FC} from 'react';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {Home} from './screens/Home';
+import {Users} from './screens/Users';
+import {UserPosts} from './screens/UserPosts';
+import {RoutersNames} from './routersNames';
+
+const Stack = createNativeStackNavigator();
 
 const App: FC = () => {
-  const [users, setUsers] = useState<any[]>([]);
-  const [posts, setPosts] = useState<any[]>([]);
-
-  useEffect(() => {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(res => res.json())
-      .then(res => {
-        setUsers(res);
-      });
-  }, []);
-
-  const getPosts = async () => {
-    await fetch('https://jsonplaceholder.typicode.com/posts')
-      .then(res => res.json())
-      .then(res => setPosts(res));
-  };
-
   return (
-    <SafeAreaView>
-      <ScrollView style={styles.scrollBlock}>
-        {users.map(item => (
-          <View key={item.id}>
-            <Text>
-              {item.id} --- {item.name}
-            </Text>
-          </View>
-        ))}
-      </ScrollView>
-      <View>
-        <TouchableHighlight style={styles.button} onLongPress={getPosts}>
-          <Text>Get posts</Text>
-        </TouchableHighlight>
-      </View>
-      <View>
-        {!!posts.length && (
-          <FlatList
-            style={styles.flatList}
-            data={posts}
-            renderItem={({item}) => (
-              <View>
-                <Text>
-                  {item.id} --- {item.title}
-                </Text>
-              </View>
-            )}
-          />
-        )}
-      </View>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: 'red',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: '600',
+          },
+        }}
+        initialRouteName={RoutersNames.HOME}>
+        <Stack.Screen name={RoutersNames.HOME} component={Home} />
+        <Stack.Screen name={RoutersNames.USERS} component={Users} />
+        <Stack.Screen name={RoutersNames.USER_POSTS} component={UserPosts} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
-
-export const styles = StyleSheet.create({
-  red: {
-    color: 'red',
-  },
-  scrollBlock: {
-    height: 30,
-    flexDirection: 'column',
-    gap: 20,
-  },
-  flatList: {
-    height: '80%',
-  },
-  button: {
-    width: '100%',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 20,
-    backgroundColor: 'blue',
-    borderRadius: 15,
-  },
-});
 
 export default App;
