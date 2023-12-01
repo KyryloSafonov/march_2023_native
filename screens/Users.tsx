@@ -2,9 +2,10 @@ import React, {FC, useEffect, useState} from 'react';
 import {FlatList, Text, TouchableOpacity, View} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {RoutersNames} from '../routersNames';
+import {UserNavigationProps} from '../routersNames/types';
 
 export const Users: FC = () => {
-  const {navigate} = useNavigation<any>();
+  const {navigate} = useNavigation<UserNavigationProps>();
 
   const [users, setUsers] = useState<any[]>([]);
 

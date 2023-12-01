@@ -1,9 +1,11 @@
 import React, {FC, useEffect, useState} from 'react';
 import {FlatList, Text, View} from 'react-native';
 import {useRoute} from '@react-navigation/native';
+import {UserPostsRouteProps} from '../routersNames/types';
+import {RoutersNames} from '../routersNames';
 
 export const UserPosts: FC = () => {
-  const {params} = useRoute<any>();
+  const {params} = useRoute<UserPostsRouteProps<RoutersNames.USER_POSTS>>();
 
   const {userId, userName} = params;
 
